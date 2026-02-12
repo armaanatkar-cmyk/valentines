@@ -1,0 +1,218 @@
+/* ===== Theme variables for soft pastel look ===== */
+:root {
+  --bg-top: #fff5fb;
+  --bg-bottom: #ffd7ec;
+  --card-bg: #ffffff;
+  --text-main: #6d2147;
+  --text-soft: #8e3f66;
+  --button-start: #ff77b6;
+  --button-end: #ff4d9a;
+  --button-shadow: rgba(214, 62, 138, 0.35);
+}
+
+/* ===== Global reset and typography ===== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-main);
+  background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+  min-height: 100vh;
+}
+
+/* ===== Full page centering container ===== */
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+}
+
+/* ===== Main card styling ===== */
+.card {
+  position: relative;
+  width: min(92vw, 520px);
+  background: var(--card-bg);
+  border-radius: 28px;
+  padding: 1.4rem 1.2rem 1.6rem;
+  text-align: center;
+  box-shadow: 0 16px 35px rgba(119, 27, 80, 0.2);
+  overflow: hidden;
+}
+
+/* ===== Heading and message text ===== */
+.title {
+  margin: 0;
+  font-size: clamp(1.6rem, 4.2vw, 2.2rem);
+}
+
+.message {
+  margin: 0.9rem auto 1.2rem;
+  max-width: 28ch;
+  font-size: clamp(1rem, 3.4vw, 1.2rem);
+  color: var(--text-soft);
+}
+
+/* ===== Illustration block ===== */
+.illustration {
+  margin: 1rem auto 0.4rem;
+  width: min(100%, 340px);
+}
+
+.illustration svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* SVG detail colors */
+.skin {
+  fill: #ffd9bf;
+}
+
+.hair {
+  fill: #5a3647;
+}
+
+.eye {
+  fill: #2f1c25;
+}
+
+.smile {
+  fill: none;
+  stroke: #8f355d;
+  stroke-linecap: round;
+  stroke-width: 3;
+}
+
+.shirt-a {
+  fill: url(#shirtA);
+}
+
+.shirt-b {
+  fill: url(#shirtB);
+}
+
+.arm {
+  fill: none;
+  stroke: #f7c4a4;
+  stroke-linecap: round;
+  stroke-width: 10;
+}
+
+.shadow {
+  fill: rgba(60, 29, 42, 0.15);
+}
+
+.svg-heart {
+  font-size: 1.05rem;
+  animation: bob 2.2s ease-in-out infinite;
+}
+
+/* ===== Primary action button ===== */
+.yes-button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.95rem 2.5rem;
+  font: inherit;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(120deg, var(--button-start), var(--button-end));
+  box-shadow: 0 10px 18px var(--button-shadow);
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.yes-button:hover,
+.yes-button:focus-visible {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 14px 24px var(--button-shadow);
+}
+
+.yes-button:active {
+  transform: scale(0.98);
+}
+
+/* ===== Layer for generated celebration particles ===== */
+.celebration-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  animation: rise 1.9s ease-out forwards;
+  opacity: 0;
+}
+
+/* ===== Success state after clicking Yes ===== */
+.card.success {
+  animation: pulse 420ms ease;
+}
+
+.success-message {
+  margin: 1.5rem 0 0;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  color: #d63384;
+}
+
+.success-subtext {
+  margin: 0.65rem auto 0;
+  max-width: 30ch;
+  color: #8d3c64;
+}
+
+/* ===== Animations ===== */
+@keyframes rise {
+  0% {
+    transform: translateY(0) scale(0.7);
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-220px) scale(1.35);
+    opacity: 0;
+  }
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.015);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ===== Mobile responsiveness ===== */
+@media (max-width: 420px) {
+  .card {
+    border-radius: 22px;
+    padding: 1.1rem 1rem 1.4rem;
+  }
+
+  .yes-button {
+    width: 100%;
+    padding-inline: 1rem;
+  }
+}
