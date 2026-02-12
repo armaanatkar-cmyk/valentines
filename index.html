@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For My Favorite Girl 💘</title>
+    <style>
+      :root {
+        --ink: #6d1842;
+        --pink: #ff4d97;
+        --pink-2: #ff7cb4;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        font-family: "Poppins", "Segoe UI", system-ui, sans-serif;
+        color: var(--ink);
+        background: radial-gradient(circle at top, #fff3f9 10%, #ffd8ea 55%, #ffc0dd 100%);
+        overflow: hidden;
+      }
+
+      .card {
+        position: relative;
+        width: min(94vw, 760px);
+        padding: clamp(1.1rem, 1.2vw + 1rem, 2.3rem);
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.88);
+        border: 3px solid #fff;
+        box-shadow: 0 18px 45px rgba(139, 22, 75, 0.22);
+        text-align: center;
+        overflow: hidden;
+      }
+
+      .badge {
+        margin: 0;
+        font-weight: 600;
+      }
+
+      h1 {
+        margin: 0.65rem 0;
+        font-size: clamp(2rem, 4vw, 3.1rem);
+      }
+
+      .subtitle {
+        margin: 0 auto 1.1rem;
+        max-width: 58ch;
+        line-height: 1.55;
+      }
+
+      .scene {
+        min-height: 170px;
+        display: grid;
+        align-content: center;
+        justify-items: center;
+        gap: 0.8rem;
+      }
+
+      .buttons {
+        position: relative;
+        width: min(90vw, 600px);
+        height: 130px;
+      }
+
+      .btn {
+        border: none;
+        border-radius: 999px;
+        padding: 0.85rem 1.35rem;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+      }
+
+      .btn:active {
+        transform: scale(0.98);
+      }
+
+      .yes {
+        position: absolute;
+        left: 28%;
+        top: 36px;
+        color: #fff;
+        background: linear-gradient(120deg, var(--pink), var(--pink-2));
+        box-shadow: 0 12px 24px rgba(156, 20, 84, 0.24);
+      }
+
+      .no {
+        position: absolute;
+        left: 56%;
+        top: 36px;
+        color: var(--ink);
+        background: #ffe8f2;
+      }
+
+      .hint {
+        margin: 0;
+        font-size: 0.95rem;
+        opacity: 0.85;
+      }
+
+      .response {
+        min-height: 2rem;
+        margin: 0.2rem 0 0;
+        font-weight: 700;
+        font-size: clamp(1.05rem, 2vw, 1.35rem);
+      }
+
+      .mail-note {
+        margin: 0.8rem 0 0;
+        font-size: 0.92rem;
+        opacity: 0.78;
+      }
+
+      .burst-layer {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .heart {
+        position: absolute;
+        opacity: 0;
+        animation: floatUp 2.05s ease forwards;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) scale(0.7);
+          opacity: 0;
+        }
+        20% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-230px) scale(1.4);
+          opacity: 0;
+        }
+      }
+
+      @keyframes wiggle {
+        0%,
+        100% {
+          transform: rotate(0deg);
+        }
+        25% {
+          transform: rotate(2deg);
+        }
+        75% {
+          transform: rotate(-2deg);
+        }
+      }
+
+      .wiggle {
+        animation: wiggle 0.35s linear 2;
+      }
+
+      @media (max-width: 620px) {
+        .buttons {
+          height: 160px;
+        }
+
+        .yes {
+          left: 14%;
+        }
+
+        .no {
+          left: 58%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card" aria-live="polite">
+      <p class="badge">💌 Open this tiny love app 💌</p>
+      <h1>Will you be my Valentine?</h1>
+      <p class="subtitle">
+        I love you so much it feels illegal. You're my favorite person, favorite smile,
+        favorite notification, and favorite everything. So I made this mini game just
+        to ask the most important question.
+      </p>
+
+      <section class="scene">
+        <div class="buttons" id="buttonsWrap">
+          <button id="yesBtn" class="btn yes" type="button">YES 💖</button>
+          <button id="noBtn" class="btn no" type="button">No 🙈</button>
+        </div>
+        <p id="response" class="response"></p>
+        <p class="hint">Tip: one answer is correct and the other is "not allowed" 😌</p>
+      </section>
+
+      <p class="mail-note">Send this file by email as an attachment — it's fully self-contained.</p>
+      <div class="burst-layer" id="burstLayer" aria-hidden="true"></div>
+    </main>
+
+    <script>
+      const yesBtn = document.getElementById("yesBtn");
+      const noBtn = document.getElementById("noBtn");
+      const response = document.getElementById("response");
+      const buttonsWrap = document.getElementById("buttonsWrap");
+      const burstLayer = document.getElementById("burstLayer");
+
+      const noReplies = [
+        "No not allowed 🚫",
+        "Babe... that's the wrong button 😂",
+        "Denied by Boyfriend Security System 🔐",
+        "This app only accepts YES 💘",
+        "Nice try. You're still my Valentine 😏",
+      ];
+
+      let noCount = 0;
+
+      function rand(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function moveNoButton() {
+        const wrapRect = buttonsWrap.getBoundingClientRect();
+        const btnRect = noBtn.getBoundingClientRect();
+
+        const maxX = wrapRect.width - btnRect.width - 8;
+        const maxY = wrapRect.height - btnRect.height - 8;
+
+        const x = rand(4, Math.max(4, maxX));
+        const y = rand(8, Math.max(8, maxY));
+
+        noBtn.style.left = `${x}px`;
+        noBtn.style.top = `${y}px`;
+      }
+
+      function launchHearts() {
+        const shapes = ["💘", "💖", "💕", "💗", "💞", "✨"];
+
+        for (let i = 0; i < 24; i += 1) {
+          const el = document.createElement("span");
+          el.className = "heart";
+          el.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+          el.style.left = `${rand(4, 94)}%`;
+          el.style.top = `${rand(55, 90)}%`;
+          el.style.fontSize = `${rand(1, 2.1)}rem`;
+          el.style.animationDelay = `${rand(0, 0.3)}s`;
+          burstLayer.appendChild(el);
+          setTimeout(() => el.remove(), 2300);
+        }
+      }
+
+      function growYesButton() {
+        const scale = 1 + Math.min(noCount * 0.1, 0.65);
+        yesBtn.style.transform = `scale(${scale})`;
+      }
+
+      noBtn.addEventListener("mouseenter", moveNoButton);
+      noBtn.addEventListener("touchstart", moveNoButton, { passive: true });
+
+      noBtn.addEventListener("click", () => {
+        response.textContent = noReplies[Math.min(noCount, noReplies.length - 1)];
+        response.classList.add("wiggle");
+        setTimeout(() => response.classList.remove("wiggle"), 700);
+
+        noCount += 1;
+        growYesButton();
+        moveNoButton();
+
+        const size = Math.max(0.55, 1 - noCount * 0.08);
+        noBtn.style.transform = `scale(${size})`;
+      });
+
+      yesBtn.addEventListener("click", () => {
+        response.textContent = "YAYYYYY 💞 Best answer ever. I love you sooo much!!";
+        launchHearts();
+        yesBtn.textContent = "She said YESSSS 🎉";
+        yesBtn.style.transform = "scale(1.16)";
+        noBtn.disabled = true;
+        noBtn.style.opacity = "0.35";
+        noBtn.style.cursor = "not-allowed";
+      });
+
+      moveNoButton();
+    </script>
+  </body>
+</html>
